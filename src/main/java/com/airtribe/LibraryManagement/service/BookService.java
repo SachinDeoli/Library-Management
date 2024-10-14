@@ -40,8 +40,9 @@ public class BookService {
         book.setAuthor(updatedBook.getAuthor());
         book.setIsbn(updatedBook.getIsbn());
         book.setPublicationYear(updatedBook.getPublicationYear());
+        book.setIsAvailable(updatedBook.getIsAvailable());
 
-        return (Book) _bookRepository.save(book);
+        return _bookRepository.save(book);
     }
 
     public List<Book> getBookByTitle(String title) throws ResourceNotFoundException {
@@ -69,5 +70,14 @@ public class BookService {
             throw new ResourceNotFoundException("No book found with isbn " + isbn);
         }
         return existingBook.get();
+    }
+
+    public List<Book> getAllAvailableBooks() throws ResourceNotFoundException {
+        List<Book> listOfBooks = _bookRepository.findAll();
+        if(listOfBooks == null || listOfBooks.size()<=0)
+        {
+            throw new ResourceNotFoundException("No available books found");
+        }
+        return listOfBooks;
     }
 }

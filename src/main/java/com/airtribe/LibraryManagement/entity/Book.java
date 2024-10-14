@@ -12,13 +12,18 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String author;
 
     @Id
     @Column(nullable = false)
     private int isbn;
 
+    @Column(nullable = false)
     private int publicationYear;
+
+    @Column(nullable = false)
+    private boolean isAvailable;
 
     public String getTitle() {
         return title;
@@ -50,5 +55,13 @@ public class Book {
 
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
+    }
+
+    public boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(boolean available) {
+        isAvailable = available;
     }
 }

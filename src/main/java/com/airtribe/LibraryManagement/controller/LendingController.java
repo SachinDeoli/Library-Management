@@ -2,7 +2,7 @@ package com.airtribe.LibraryManagement.controller;
 
 import com.airtribe.LibraryManagement.exception.InvalidDataException;
 import com.airtribe.LibraryManagement.exception.ResourceNotFoundException;
-import com.airtribe.LibraryManagement.model.BorrowedBook;
+import com.airtribe.LibraryManagement.entity.BorrowedBook;
 import com.airtribe.LibraryManagement.service.LendingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

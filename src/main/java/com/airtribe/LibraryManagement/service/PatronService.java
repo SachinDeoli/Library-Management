@@ -5,6 +5,8 @@ import com.airtribe.LibraryManagement.entity.Patron;
 import com.airtribe.LibraryManagement.exception.DataAlreadyExistException;
 import com.airtribe.LibraryManagement.exception.ResourceNotFoundException;
 import com.airtribe.LibraryManagement.repository.PatronRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,11 @@ public class PatronService {
     @Autowired
     private PatronRepository _patronRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(PatronService.class);
+
     public Patron addPatron(Patron patron) throws DataAlreadyExistException {
         if (_patronRepository.existsById(patron.getPatronId())) {
+            logger.info("Patron with ID " + patron.getPatronId() + " already exists.");
             throw new DataAlreadyExistException("Patron with ID " + patron.getPatronId() + " already exists.");
         }
         return (Patron) _patronRepository.save(patron);
@@ -27,6 +32,7 @@ public class PatronService {
     public Patron updatePatron(long patronId, Patron patron) throws ResourceNotFoundException {
         Optional<Patron> _patron = _patronRepository.findById(patronId);
         if (!_patron.isPresent()) {
+            logger.info("No Patron found with ID " + patronId);
             throw new ResourceNotFoundException("No Patron found with ID " + patronId);
         }
         Patron updatedPatron = _patron.get();
@@ -38,6 +44,7 @@ public class PatronService {
     public void removePatron(long patronId) throws ResourceNotFoundException {
         Optional<Patron> _patron = _patronRepository.findById(patronId);
         if (!_patron.isPresent()) {
+            logger.info("No Patron found with ID " + patronId);
             throw new ResourceNotFoundException("No Patron found with ID " + patronId);
         }
        _patronRepository.deleteById(patronId);
@@ -47,6 +54,7 @@ public class PatronService {
         List<Patron> listofPatrons = _patronRepository.findAll();
         if(listofPatrons == null || listofPatrons.size()<=0)
         {
+            logger.info("No patrons found!");
             throw new ResourceNotFoundException("No patrons found!");
         }
         return listofPatrons;
@@ -56,6 +64,7 @@ public class PatronService {
         Optional<Patron> patron = _patronRepository.findById(patronId);
         if(!patron.isPresent())
         {
+            logger.info("No patron found with id " + patronId);
             throw new ResourceNotFoundException("No patron found with id " + patronId);
         }
         return patron.get();

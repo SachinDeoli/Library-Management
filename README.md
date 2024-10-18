@@ -31,10 +31,11 @@ This project uses an in-memory H2 database for data persistence during developme
 
 ### Classes Overview
 * **Book:** Represents a book with attributes like title, author, ISBN, and publication year.
-* TODO
+* **Patron:** Represents a library patron with attributes like name, id.
+* **LendingService:** Represents a book lending transaction with attributes like borrowing book, returning book.
 
 ## OOP Concepts
 * **Encapsulation:** Used private fields with public getters/setters.
 * **Inheritance:** TODO
 * **Polymorphism:** Used interfaces for services.
-* **Abstraction:** TODO.
+* **Abstraction:** User interface for services.

@@ -36,9 +36,15 @@ public class BookController {
         return new ResponseEntity<>(updatedBook, HttpStatus.OK);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<Book>> getAllAvailableBooks(@RequestParam(defaultValue = "true") boolean isAvailable) throws ResourceNotFoundException {
+        List<Book> book = _bookService.getAllAvailableBooks(isAvailable);
+        return book != null || book.size()>0 ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping
-    public ResponseEntity<List<Book>> getAllAvailableBooks() throws ResourceNotFoundException {
-        List<Book> book = _bookService.getAllAvailableBooks();
+    public ResponseEntity<List<Book>> getAllBooks() throws ResourceNotFoundException {
+        List<Book> book = _bookService.getAllBooks();
         return book != null || book.size()>0 ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

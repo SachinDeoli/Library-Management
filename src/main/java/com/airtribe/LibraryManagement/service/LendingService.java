@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LendingService {
+public class LendingService implements ILendingService {
 
     @Autowired
     private BookRepository bookRepository;
@@ -28,6 +28,7 @@ public class LendingService {
 
     private final Logger logger = LoggerFactory.getLogger(LendingService.class);
 
+    @Override
     public void borrowBook(String bookTitle, long patronId) throws ResourceNotFoundException, InvalidDataException {
         Optional<Book> book = bookRepository.findByTitleIgnoreCase(bookTitle);
         Optional<Patron> patron = patronRepository.findById(patronId);
@@ -50,6 +51,7 @@ public class LendingService {
         patronRepository.save(dbPatron);
     }
 
+    @Override
     public void returnBook(String title, long patronId) throws ResourceNotFoundException, InvalidDataException {
         Optional<Book> book = bookRepository.findByTitleIgnoreCase(title);
         Optional<Patron> patron = patronRepository.findById(patronId);
@@ -82,6 +84,7 @@ public class LendingService {
         }
     }
 
+    @Override
     public List<BorrowedBook> getPatronHistory(long patronId) throws InvalidDataException, ResourceNotFoundException {
         Optional<Patron> patron = patronRepository.findById(patronId);
         if(patron.get().getBorrowingHistory().size()<=0)
@@ -92,6 +95,7 @@ public class LendingService {
         return patron.get().getBorrowingHistory();
     }
 
+    @Override
     public List<BorrowedBook> getAllPatronHistory() throws ResourceNotFoundException {
         List<Patron> patrons = patronRepository.findAll();
         List<BorrowedBook> borrowedBookList = new ArrayList<>();

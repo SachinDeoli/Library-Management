@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PatronService {
+public class PatronService implements IPatronService {
 
     @Autowired
     private PatronRepository _patronRepository;
 
     private final Logger logger = LoggerFactory.getLogger(PatronService.class);
 
+    @Override
     public Patron addPatron(Patron patron) throws DataAlreadyExistException {
         if (_patronRepository.existsById(patron.getPatronId())) {
             logger.info("Patron with ID " + patron.getPatronId() + " already exists.");
@@ -29,6 +30,7 @@ public class PatronService {
         return (Patron) _patronRepository.save(patron);
     }
 
+    @Override
     public Patron updatePatron(long patronId, Patron patron) throws ResourceNotFoundException {
         Optional<Patron> _patron = _patronRepository.findById(patronId);
         if (!_patron.isPresent()) {
@@ -40,7 +42,7 @@ public class PatronService {
         return (Patron) _patronRepository.save(updatedPatron);
     }
 
-
+    @Override
     public void removePatron(long patronId) throws ResourceNotFoundException {
         Optional<Patron> _patron = _patronRepository.findById(patronId);
         if (!_patron.isPresent()) {
@@ -50,6 +52,7 @@ public class PatronService {
        _patronRepository.deleteById(patronId);
     }
 
+    @Override
     public List<Patron> getAllPatrons() throws ResourceNotFoundException {
         List<Patron> listofPatrons = _patronRepository.findAll();
         if(listofPatrons == null || listofPatrons.size()<=0)
@@ -60,6 +63,7 @@ public class PatronService {
         return listofPatrons;
     }
 
+    @Override
     public Patron getPatronById(long patronId) throws ResourceNotFoundException {
         Optional<Patron> patron = _patronRepository.findById(patronId);
         if(!patron.isPresent())

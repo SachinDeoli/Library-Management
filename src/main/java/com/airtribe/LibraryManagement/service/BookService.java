@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+public class BookService implements IBookService {
 
     @Autowired
     private BookRepository _bookRepository;
 
     private final Logger logger = LoggerFactory.getLogger(BookService.class);
 
+    @Override
     public Book addBook(Book book) throws DataAlreadyExistException {
         if (_bookRepository.existsById(book.getIsbn())) {
             logger.info("Book with ISBN " + book.getIsbn() + " already exists.");
@@ -28,6 +29,7 @@ public class BookService {
         return (Book) _bookRepository.save(book);
     }
 
+    @Override
     public void removeBook(int isbn) throws ResourceNotFoundException {
         if (!_bookRepository.existsById(isbn)) {
             logger.info("No book found with ISBN " + isbn);
@@ -36,6 +38,7 @@ public class BookService {
         _bookRepository.deleteById(isbn);
     }
 
+    @Override
     public Book updateBook(int isbn, Book updatedBook) throws ResourceNotFoundException {
         Optional<Book> existingBook = _bookRepository.findById(isbn);
         if (!existingBook.isPresent()) {
@@ -52,6 +55,7 @@ public class BookService {
         return _bookRepository.save(book);
     }
 
+    @Override
     public Book getBookByTitle(String title) throws ResourceNotFoundException {
         Optional<Book> existingBook = _bookRepository.findByTitleIgnoreCase(title);
         if(!existingBook.isPresent())
@@ -62,6 +66,7 @@ public class BookService {
         return existingBook.get();
     }
 
+    @Override
     public List<Book> getBookByAuthor(String author) throws ResourceNotFoundException {
         Optional<List<Book>> existingBook = _bookRepository.findByAuthorIgnoreCase(author);
         if(!existingBook.isPresent() || existingBook.get().size()<=0)
@@ -72,6 +77,7 @@ public class BookService {
         return existingBook.get();
     }
 
+    @Override
     public Book getBookByISBN(int isbn) throws ResourceNotFoundException {
         Optional<Book> existingBook = _bookRepository.findById(isbn);
         if(!existingBook.isPresent())
@@ -82,6 +88,7 @@ public class BookService {
         return existingBook.get();
     }
 
+    @Override
     public List<Book> getAllAvailableBooks(boolean isAvailable) throws ResourceNotFoundException {
         List<Book> listOfBooks = _bookRepository.findByIsAvailable(isAvailable);
         if(listOfBooks == null || listOfBooks.size()<=0)
@@ -92,6 +99,7 @@ public class BookService {
         return listOfBooks;
     }
 
+    @Override
     public List<Book> getAllBooks() throws ResourceNotFoundException {
         List<Book> listOfBooks = _bookRepository.findAll();
         if(listOfBooks == null || listOfBooks.size()<=0)

@@ -106,6 +106,6 @@ The system is designed using the MVC architecture with the following components:
 * **GET /library/lending:** Get all patrons borrowing history
 
 ## Clone and Run
-* **Clone:** Run `git clone
+* **Clone Link:** https://github.com/SachinDeoli/Library-Management.git
 * **Run:** Open the project in IntelliJ IDEA and run the application.
 * **Access:** Use http://localhost:8080 to access the application.

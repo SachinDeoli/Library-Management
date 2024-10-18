@@ -7,13 +7,12 @@ import com.airtribe.LibraryManagement.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/library/book")
 public class BookController {
 
     @Autowired
@@ -25,15 +24,15 @@ public class BookController {
         return new ResponseEntity<>(resultBook, HttpStatus.CREATED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> removeBook(@RequestParam int isbn) throws ResourceNotFoundException {
+    @DeleteMapping("/{isbn}")
+    public ResponseEntity<Void> removeBook(@PathVariable int isbn) throws ResourceNotFoundException {
         _bookService.removeBook(isbn);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping
-    public ResponseEntity<Book> updateBook(@RequestBody Book book) throws ResourceNotFoundException {
-        Book updatedBook = _bookService.updateBook(book);
+    @PutMapping("/{isbn}")
+    public ResponseEntity<Book> updateBook(@PathVariable int isbn, @RequestBody Book book) throws ResourceNotFoundException {
+        Book updatedBook = _bookService.updateBook(isbn, book);
         return new ResponseEntity<>(updatedBook, HttpStatus.OK);
     }
 
@@ -43,22 +42,21 @@ public class BookController {
         return book != null || book.size()>0 ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/title")
-    public ResponseEntity<List<Book>> getBookByTitle(@RequestParam String title) throws ResourceNotFoundException {
-        List<Book> book = _bookService.getBookByTitle(title);
-        return book != null && book.size()>0 ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/title/{title}")
+    public ResponseEntity<Book> getBookByTitle(@PathVariable String title) throws ResourceNotFoundException {
+        Book book = _bookService.getBookByTitle(title);
+        return book != null ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/author")
-    public ResponseEntity<List<Book>> getBookByAuthor(@RequestParam String author) throws ResourceNotFoundException {
+    @GetMapping("/author/{author}")
+    public ResponseEntity<List<Book>> getBookByAuthor(@PathVariable String author) throws ResourceNotFoundException {
         List<Book> book = _bookService.getBookByAuthor(author);
         return book != null && book.size()>0 ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/isbn")
-    public ResponseEntity<Book> getBookByISBN(@RequestParam int isbn) throws ResourceNotFoundException {
+    @GetMapping("/isbn/{isbn}")
+    public ResponseEntity<Book> getBookByISBN(@PathVariable int isbn) throws ResourceNotFoundException {
         Book book = _bookService.getBookByISBN(isbn);
         return book != null ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
 }

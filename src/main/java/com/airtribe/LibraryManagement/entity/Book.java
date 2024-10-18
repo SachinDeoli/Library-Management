@@ -1,11 +1,8 @@
 package com.airtribe.LibraryManagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
-@Component
 @Entity
 public class Book {
 
@@ -16,7 +13,7 @@ public class Book {
     private String author;
 
     @Id
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private int isbn;
 
     @Column(nullable = false)

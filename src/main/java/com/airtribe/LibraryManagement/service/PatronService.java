@@ -24,10 +24,10 @@ public class PatronService {
         return (Patron) _patronRepository.save(patron);
     }
 
-    public Patron updatePatron(Patron patron) throws ResourceNotFoundException {
-        Optional<Patron> _patron = _patronRepository.findById(patron.getPatronId());
+    public Patron updatePatron(long patronId, Patron patron) throws ResourceNotFoundException {
+        Optional<Patron> _patron = _patronRepository.findById(patronId);
         if (!_patron.isPresent()) {
-            throw new ResourceNotFoundException("No Patron found with ID " + patron.getPatronId());
+            throw new ResourceNotFoundException("No Patron found with ID " + patronId);
         }
         Patron updatedPatron = _patron.get();
         updatedPatron.setName(patron.getName());
@@ -35,7 +35,7 @@ public class PatronService {
     }
 
 
-    public void removePatron(int patronId) throws ResourceNotFoundException {
+    public void removePatron(long patronId) throws ResourceNotFoundException {
         Optional<Patron> _patron = _patronRepository.findById(patronId);
         if (!_patron.isPresent()) {
             throw new ResourceNotFoundException("No Patron found with ID " + patronId);
@@ -50,5 +50,14 @@ public class PatronService {
             throw new ResourceNotFoundException("No patrons found!");
         }
         return listofPatrons;
+    }
+
+    public Patron getPatronById(long patronId) throws ResourceNotFoundException {
+        Optional<Patron> patron = _patronRepository.findById(patronId);
+        if(!patron.isPresent())
+        {
+            throw new ResourceNotFoundException("No patron found with id " + patronId);
+        }
+        return patron.get();
     }
 }

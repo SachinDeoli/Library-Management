@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/patron")
+@RequestMapping("/library/patron")
 public class PatronController {
 
     @Autowired
@@ -24,14 +24,14 @@ public class PatronController {
         return new ResponseEntity<>(_patron, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Patron> updatePatron(@RequestBody Patron patron) throws ResourceNotFoundException {
-        Patron _patron = _patronService.updatePatron(patron);
+    @PutMapping("/{patronId}")
+    public ResponseEntity<Patron> updatePatron(@PathVariable long patronId, @RequestBody Patron patron) throws ResourceNotFoundException {
+        Patron _patron = _patronService.updatePatron(patronId, patron);
         return new ResponseEntity<>(_patron, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> removePatron(@RequestParam int patronId) throws ResourceNotFoundException {
+    @DeleteMapping("/{patronId}")
+    public ResponseEntity<Void> removePatron(@PathVariable int patronId) throws ResourceNotFoundException {
         _patronService.removePatron(patronId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -40,6 +40,13 @@ public class PatronController {
     public ResponseEntity<List<Patron>> getAllPatrons() throws ResourceNotFoundException {
         List<Patron> listOfPatron = _patronService.getAllPatrons();
         return listOfPatron != null || listOfPatron.size()>0 ? new ResponseEntity<>(listOfPatron, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    @GetMapping("/{patronId}")
+    public ResponseEntity<Patron> getPatronById(@PathVariable int patronId) throws ResourceNotFoundException {
+        Patron listOfPatron = _patronService.getPatronById(patronId);
+        return listOfPatron != null ? new ResponseEntity<>(listOfPatron, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 }

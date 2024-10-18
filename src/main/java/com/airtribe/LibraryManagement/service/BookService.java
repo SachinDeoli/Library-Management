@@ -30,10 +30,10 @@ public class BookService {
         _bookRepository.deleteById(isbn);
     }
 
-    public Book updateBook(Book updatedBook) throws ResourceNotFoundException {
-        Optional<Book> existingBook = _bookRepository.findById(updatedBook.getIsbn());
+    public Book updateBook(int isbn, Book updatedBook) throws ResourceNotFoundException {
+        Optional<Book> existingBook = _bookRepository.findById(isbn);
         if (!existingBook.isPresent()) {
-            throw new ResourceNotFoundException("No book found with ISBN " + updatedBook.getIsbn());
+            throw new ResourceNotFoundException("No book found with ISBN " + isbn);
         }
         Book book = existingBook.get();
         book.setTitle(updatedBook.getTitle());
@@ -45,8 +45,8 @@ public class BookService {
         return _bookRepository.save(book);
     }
 
-    public List<Book> getBookByTitle(String title) throws ResourceNotFoundException {
-        Optional<List<Book>> existingBook = _bookRepository.findByTitleIgnoreCase(title);
+    public Book getBookByTitle(String title) throws ResourceNotFoundException {
+        Optional<Book> existingBook = _bookRepository.findByTitleIgnoreCase(title);
         if(!existingBook.isPresent())
         {
             throw new ResourceNotFoundException("No book found with title " + title);
@@ -56,7 +56,7 @@ public class BookService {
 
     public List<Book> getBookByAuthor(String author) throws ResourceNotFoundException {
         Optional<List<Book>> existingBook = _bookRepository.findByAuthorIgnoreCase(author);
-        if(!existingBook.isPresent())
+        if(!existingBook.isPresent() || existingBook.get().size()<=0)
         {
             throw new ResourceNotFoundException("No book found with author " + author);
         }

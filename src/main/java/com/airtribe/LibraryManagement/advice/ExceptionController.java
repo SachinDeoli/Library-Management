@@ -1,6 +1,7 @@
 package com.airtribe.LibraryManagement.advice;
 
 import com.airtribe.LibraryManagement.exception.DataAlreadyExistException;
+import com.airtribe.LibraryManagement.exception.InvalidDataException;
 import com.airtribe.LibraryManagement.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,11 @@ public class ExceptionController {
     @ExceptionHandler(DataAlreadyExistException.class)
     public ResponseEntity<String> dataAlreadyExistException(DataAlreadyExistException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<String> invalidDataException(InvalidDataException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 }
